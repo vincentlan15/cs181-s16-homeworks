@@ -2,13 +2,12 @@
 \documentclass[submit]{harvardml}
 
 % Put in your full name and email address.
-\name{Your Name}
-\email{email@fas.harvard.edu}
+\name{Tianxing Lan}
+\email{tianxinglan@college.harvard.edu}
 
 % List any people you worked with.
 \collaborators{%
-  John Doe,
-  Fred Doe
+  Kojin Oshiba，Dylan Ho
 }
 
 % You don't need to change these.
@@ -61,7 +60,7 @@ Consider a dataset with the following 6 points in $1D$: \[\{(x_1, y_1)\} =\{(-3
 mapping these points to $2$ dimensions using the feature vector $\phi : x
 \mapsto (x, x^2)$. The max-margin classifier objective is given by:
 \begin{equation}
-  \min_{\mathbf{w}, w_0} \|\mathbf{w}\|_2^2 \quad \text{s.t.} \quad y_i(\mathbf{w}^T \phi(x_i) +
+  \min_{\mathbf{w}, w_0} \|\mathbf{w}\|_2^2 \quad \text{s.t.} \quad y_i(\mathbf{w}^T c +
   w_0) \geq 1,~\forall i
 \end{equation}
 
@@ -83,7 +82,23 @@ the exercise when composing your answer and to justify each step.
 
 \end{problem}
 \subsection*{Solution}
+\begin{enumerate}
+\item $\mathbf{w}$ needs to be parallel to (0,1). This is because all the data points of $\phi(w_i)$ are symmetric with regard to y-axis, and by the rule of symmetry, the line that separates them with the maximum margin also needs to be symmetric with regard to y axis. Specifically, for an optimal $\mathbf{w_0}$, tilting $\mathbf{w}$ from being symmetric  to y axis would either decrease its margin from (2,4) and (-3,9) or decrease its margin from (-2,4) and (3,9). Thus $\mathbf{w}$ has to be parallel to (0,1).
 
+\item Just by looking at the graph of all $\phi{w_i}$ we can see (-3,9) and (3,9) don't matter. The boundary should be between (-2,4), (2,4) and (-1,1),(1,1), the first two with y value 1 and the latter two with y value -1. Since the boundary needs to be parallel to (1,0), it achieves maximum margin when it is 1.5 away from both (2,4),(-2,4) and (1,-1),(-1,1). Thus the margin is 1.5.
+
+\item By law of symmetry, we can solve for $\mathbf{w}$ just using (2,4) and (1,1). From 2, both of these points restrict $\mathbf{w}$, so in both cases we have  equality. 
+1($\mathbf{w}$(2,4)+$w_0$)=1
+-1($\mathbf{w}$(1,1)+$w_0$)=1
+$\mathbf{w}$=c(0,1)
+Thus $\mathbf{w}$=(0,$\frac{2}{3}$)
+
+\item plugging $\mathbf{w}=\frac{2}{3}$ in either of the equations and we get $w_0=-\frac{5}{3}$ 
+
+\item $f(x)=y_i(\frac{2}{3}x^2-\frac{5}{3}-1)=y_i(\frac{2}{3}x^2-\frac{8}{3})$
+
+
+\end{enumerate}
 
 
 
@@ -107,9 +122,11 @@ then the following are also valid kernels:
   K(\boldx, \boldx') &= f(\boldx)\,K_1(\boldx, \boldx')\,f(\boldx') \quad
   \text{where $f$ is any function from~$\reals^D$ to $\reals$}
 \end{align*}
-
  \end{problem}
 \subsection*{Solution}
+$K(x,x')$=$exp(-(x^Tx-2x^Tx'+x'^Tx'))=exp(-x^Tx)exp(2x^Tx')exp(x'^Tx')$
+Let $f(x)=exp(-x^Tx)$, then $K(x,x')=f(x)exp(2x^Tx')f(x')$
+Since $x^Tx'$ is a kernel, $2x^Tx'$ is a kernel and thus $exp(2x^Tx')$ is a kernel. Thus $K(x,x')$ is a kernel.
 
 
 \newpage
@@ -149,8 +166,19 @@ For extra credit (+7 pts), implement the SMO algorithm and implement the LASVM p
 \end{problem}
 
 \subsection*{Solution}
+\begin{enumerate}
+\item Using LASVM to evaluate the importance of data, and thus save more time and memory when performing high dimensional classification.  
 
+\item w':weight vector/coefficient vector for $\phi(x)$; $\phi(x)$ feature vector resulting from x; b: bias parameter
 
+\item Novikoff’s Theorem, which states that the perceptron algorithm converges after a finite number of mistakes, or
+after inserting a finite number of support vectors. 
+
+\item It removes support vectors from the kernel expansion to avoid  noisy data and ultimately overfitting
+
+\item It converges to the standard SVM algorithm. It runs faster and saves memory than SVM because it has the flexibility of online algorithm and runs through the  data set only once.
+
+\end{enumerate}
 
 \newpage
 
